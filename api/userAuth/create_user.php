@@ -27,11 +27,15 @@ $data = json_decode(file_get_contents("php://input"));
     $user->l_name = $data->last_name;
     $user->email = $data->email;
     $user->pass = $data->password;
+    $user->isAdm=$data->isAdmin;
+
 // create the user
 if(!empty($user->f_name) &&
     !empty($user->l_name) &&
     !empty($user->email) &&
-    !empty($user->pass) && $user->create() ){
+    !empty($user->pass) &&
+    !empty($user->isAdm) &&
+    $user->create() ){
 
     // set response code
     http_response_code(200);

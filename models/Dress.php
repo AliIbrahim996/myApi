@@ -32,4 +32,30 @@ class Dress
             return true;
         }
     }
+    function addDress($data){
+        $this->d_type = $data->d_type;
+        $this->d_color = $data->d_color;
+        $this->d_price = $data->d_price;
+        // insert query
+        $query = "INSERT INTO " . $this->table . "
+            SET
+                d_type = ?,
+                d_color = ?,
+                d_price = ?";
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+        // sanitize
+        $this->d_type=htmlspecialchars(strip_tags($this->d_type));
+        $this->d_color=htmlspecialchars(strip_tags($this->d_color));
+        $this->d_price=htmlspecialchars(strip_tags($this->d_price));
+        // bind the values
+        $stmt->bindParam(1, $this->d_type);
+        $stmt->bindParam(2, $this->d_color);
+        $stmt->bindParam(3, $this->d_price);
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
+    }
 }
