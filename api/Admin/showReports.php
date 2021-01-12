@@ -5,21 +5,43 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+require '../userAuth/isAdmin.php';
 
-include_once '../config/Database.php';
-include_once '../../models/Customer.php';
-include_once '../../models/Dress.php';
-//init DB & Connect
-$database= new Database();
-$db = $database->connect();
+include_once  'CustomerManagment.php';
+include_once 'DressesManagment.php';
+include '../showDresses.php';
 
+$cManage=new CustomerManagment();
+$dManage=new DressesManagment();
 //Init objects
-$dress= new Dress($db);
 
-$customers=new Customer($db);
+$result = $dManage->viewDresses();
+viewDresses($result);
 
-$result=$dress->getDress();
+$result=$cManage->getCustomerInfo();
+$num= $result->rowCount();
 
-$result=$customers->getCustomers();
+if($num>0){
+    $customers_arr= array();
+    $customers_arr['data']=array();
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)){
+        $customer_item=array(
+            'id' => $row['user_id'],
+            'name' => $row['customer_name'] ,
+            'PhoneNum' =>$row['phoneNumber'] ,
+            'Location' =>$row[' location'] ,
+            'hasPaymentMethod' =>$row['hasPaymentMethod'] ,
+            'card_id' =>$row['card_id'] ,
+        );
+        array_push($customers_arr['data'],$customer_item);
+    }
+    json_encode($customers_arr);
+}
+else{
+    http_response_code(404);
+
+    // tell the user login failed
+    echo json_encode(array("message" => "No data found."));
+}
 
 

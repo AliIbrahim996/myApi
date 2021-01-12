@@ -16,13 +16,12 @@ class Dress
         $this->conn = $db;
     }
 
-    function getDress()
+    function getDresses()
     {
         $query = "Select * from " . $this->table;
         $stmt = $this->conn->prepare($query);
-        if ($stmt->execute()) {
-            return true;
-        }
+        $stmt->execute();
+        return $stmt;
     }
     function deleteDress()
     {

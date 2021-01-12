@@ -1,4 +1,5 @@
 <?php
+include  '../showDresses.php';
 class viewDresses{
     private $dress;
     public function __construct()
@@ -7,7 +8,9 @@ class viewDresses{
         $db = $database->connect();
         $dress=new Dress($db);
     }
-    function viewDresses(){
-        $this->dress-> getDress();
+    function viewDresses()
+    {
+        $result = $this->dress->getDresses();
+        viewDresses($result);
     }
 }

@@ -20,7 +20,7 @@ require '../userAuth/isAdmin.php';
      }
 
      public function getCustomerInfo(){
-         $this->customer->getCutomers();
+         return $this->customer->getCustomeres();
      }
 
      public function deleteCustomer(){

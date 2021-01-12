@@ -65,14 +65,11 @@ class Customer
         return false;
     }
 
-    function getCustomer(){
+    function getCustomeres(){
         $query="Select * from ".$this->table;
         $stmt = $this->conn->prepare($query);
-        if($stmt->execute()){
-            return true;
-        }
-
-        return false;
+        $stmt->execute();
+        return $stmt;
     }
 
     function delete($u_id){

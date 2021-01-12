@@ -20,7 +20,7 @@ class DressesManagment
         $dress=new Dress($db);
     }
     function viewDresses(){
-        $this->dress-> getDress();
+       return $this->dress->getDresses();
     }
     function deleteDress(){
         // get posted data
