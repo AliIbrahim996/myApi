@@ -149,7 +149,7 @@ class User{
             $this->f_name = $row['first_name'];
             $this->l_name = $row['last_name'];
             $this->pass = $row['password'];
-
+            $this->isAdm = $row['user_role'];
             // return true because email exists in the database
             return true;
         }
@@ -160,18 +160,20 @@ class User{
 
     public function isAdmin()
     {
-      $this->getUserId();
-        $query="Select isAdmin from priv where user_id =".$this->id;
-        echo $query;
+        $query="Select user_role FROM " . $this->table . "
+            WHERE user_email = ?
+            LIMIT 0,1";
+
         $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->email);
         $stmt->execute();
         $num = $stmt->rowCount();
         if($num>0) {
 
             // get record values
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            echo "isAdmin ".$row['isAdmin'];
-            if($row['isAdmin']){
+            echo "isAdmin ".$row['user_role'];
+            if($row['user_role']){
                 return true;
             }
             else
@@ -180,4 +182,5 @@ class User{
             }
         }
     }
+
 }
