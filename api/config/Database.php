@@ -19,7 +19,7 @@ class Database
     {
         $this->conn=null;
         try {
-            $this->conn = new PDO('mysql:127.0.0.1=localhost;port=3306;dbname= '.$this->db_name,
+            $this->conn = new PDO('mysql:127.0.0.1=localhost;port=3306;dbname='.$this->db_name,
                 $this->username,$this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
         }

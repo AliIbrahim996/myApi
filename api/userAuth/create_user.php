@@ -1,7 +1,7 @@
 <?php
 
 // required headers
-header("Access-Control-Allow-Origin: http://localhost/SCIT/Train");
+header("Access-Control-Allow-Origin: http://localhost/SCIT/test");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
@@ -22,18 +22,16 @@ $user = new User($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // set user property values
-$user->f_name = $data->first_name;
-$user->l_name = $data->last_name;
-$user->email = $data->email;
-$user->pass = $data->password;
 
+    $user->f_name = $data->first_name;
+    $user->l_name = $data->last_name;
+    $user->email = $data->email;
+    $user->pass = $data->password;
 // create the user
-if(
-    !empty($user->f_name) &&
+if(!empty($user->f_name) &&
+    !empty($user->l_name) &&
     !empty($user->email) &&
-    !empty($user->password) &&
-    $user->create()
-){
+    !empty($user->pass) && $user->create() ){
 
     // set response code
     http_response_code(200);

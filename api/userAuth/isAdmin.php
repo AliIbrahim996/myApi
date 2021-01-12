@@ -1,6 +1,6 @@
 <?php
 // required headers
-header("Access-Control-Allow-Origin: http://localhost/SCIT/Train/api/userAuth/login.php");
+header("Access-Control-Allow-Origin: http://localhost/SCIT/test/api/userAuth/login.php");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");

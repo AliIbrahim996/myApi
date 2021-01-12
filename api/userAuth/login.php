@@ -1,11 +1,15 @@
 <?php
 
 // required headers
-header("Access-Control-Allow-Origin: http://localhost/SCIT/Train");
+header("Access-Control-Allow-Origin: http://localhost/SCIT/test");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+
+include_once '../config/Database.php';
+include_once '../../models/User.php';
 
 //init DB & Connect
 $database= new Database();
@@ -39,7 +43,7 @@ date_default_timezone_set('Asia/Damascus');
 $key = "myKey";
 $issued_at = time();
 $expiration_time = $issued_at + (60 * 60); // valid for 1 hour
-$issuer = "http://localhost/SCIT/Train";
+$issuer = "http://localhost/SCIT/test";
 if($email_exists && password_verify($data->password, $user->pass)) {
 
     $token = array(

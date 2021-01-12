@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost/SCIT/Train/api/userAuth/isAdmin.php");
+header("Access-Control-Allow-Origin: http://localhost/SCIT/test/api/userAuth/isAdmin.php");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
@@ -37,7 +37,7 @@ class DressesManagment
             // display message: user was created
             echo json_encode(array("message" => "Dress deleted Successful."));
         }
-    // message if unable to create user
+    // message if unable to create
         else{
 
             // set response code

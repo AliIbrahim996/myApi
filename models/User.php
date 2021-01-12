@@ -29,12 +29,12 @@ class User{
     function create(){
 
         // insert query
-        $query = "INSERT INTO " . $this->table_name . "
+        $query = "INSERT INTO " . $this->table . "
             SET
-                first_name = :firstname,
-                last_name = :lastname,
-                email = :email,
-                password = :password";
+                first_name = ?,
+                last_name = ?,
+                user_email = ?,
+                password = ?";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
@@ -46,13 +46,13 @@ class User{
         $this->pass=htmlspecialchars(strip_tags($this->pass));
 
         // bind the values
-        $stmt->bindParam(':first_name', $this->f_name);
-        $stmt->bindParam(':last_name', $this->l_name);
-        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(1, $this->f_name);
+        $stmt->bindParam(2, $this->l_name);
+        $stmt->bindParam(3, $this->email);
 
         // hash the password before saving to database
         $password_hash = password_hash($this->pass, PASSWORD_BCRYPT);
-        $stmt->bindParam(':password', $password_hash);
+        $stmt->bindParam(4, $password_hash);
 
         // execute the query, also check if query was successful
         if($stmt->execute()){
@@ -68,8 +68,8 @@ class User{
 
         // query to check if email exists
         $query = "SELECT userId, first_name, last_name, password
-            FROM " . $this->table_name . "
-            WHERE email = ?
+            FROM " . $this->table . "
+            WHERE user_email = ?
             LIMIT 0,1";
 
         // prepare the query
