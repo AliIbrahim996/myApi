@@ -6,17 +6,11 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-include_once '../config/Database.php';
-include_once '../../models/User.php';
 require 'login.php';
 //init DB & Connect
-$database= new Database();
-$db = $database->connect();
-$user = new User($db);
-$is_admin = $user->isAdmin();
 
-if($is_admin){
-
+if (isset ($_SESSION ['userId']) && $row ["role"] = 1)
+{
     // set response code
     http_response_code(200);
 

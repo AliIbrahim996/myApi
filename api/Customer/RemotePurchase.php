@@ -9,6 +9,6 @@ class RemotePurchase{
     }
 
     function addToCart(){
-        
+
     }
 }

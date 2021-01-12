@@ -7,7 +7,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 
 include_once '../config/Database.php';
-include_once '../../models/User.php';
+include_once '../../models/Customer.php';
 include_once '../../models/Dress.php';
 //init DB & Connect
 $database= new Database();
@@ -15,9 +15,11 @@ $db = $database->connect();
 
 //Init objects
 $dress= new Dress($db);
-$users=new User($db);
 
-$dress->getDress();
-$users->getUsers();
+$customers=new Customer($db);
+
+$result=$dress->getDress();
+
+$result=$customers->getCustomers();
 
 

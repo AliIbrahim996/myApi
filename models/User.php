@@ -35,12 +35,9 @@ class User{
                 first_name = ?,
                 last_name = ?,
                 user_email = ?,
-                password = ?";
+                password = ?,
+                user_role = ?";
 
-        $query2= "INSERT INTO priv "."
-            SET
-                user_id = ?,
-                isAdmin = ?";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
@@ -59,20 +56,22 @@ class User{
         // hash the password before saving to database
         $password_hash = password_hash($this->pass, PASSWORD_BCRYPT);
         $stmt->bindParam(4, $password_hash);
+        $stmt->bindParam(5, $this->isAdm);
 
         // execute the query, also check if query was successful
-        if($stmt->execute()){
-            $this->getUserId();
-            $stmt = $this->conn->prepare($query2);
-            $stmt->bindParam(1, $this->id);
-            $stmt->bindParam(2, $this->isAdm);
-            if($stmt->execute()){
-                echo "user admin granted!";
-                return true;
-            }
+        if($stmt->execute()) {
+            return true;
         }
 
         return false;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
     function getUserId(){
         // query to check if email exists
@@ -104,7 +103,20 @@ class User{
         }
     }
     function delete(){
+        $query= "Delete from ".$this->table
+            ."where userId = ?";
+        $stmt = $this->conn->prepare( $query );
 
+        $this->email=htmlspecialchars(strip_tags($this->id));
+
+        // bind value
+        $stmt->bindParam(1, $this->email);
+
+        // execute the query
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
     }
     function emailExists(){
 
