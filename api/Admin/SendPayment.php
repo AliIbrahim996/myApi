@@ -21,6 +21,6 @@ class SendPayment implements sendPay {
         $this->purchase->insertData();
         // TODO: Implement sendPay() method.
         http_response_code(200);
-        echo json_encode(array("message" => "purchase done."));
+        json_encode(array("message" => "purchase done."));
     }
 }

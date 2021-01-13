@@ -59,7 +59,7 @@ class User{
         $stmt->bindParam(5, $this->isAdm);
 
         // execute the query, also check if query was successful
-        if($stmt->execute()) {
+        if($stmt->execute()) {;
             return true;
         }
 

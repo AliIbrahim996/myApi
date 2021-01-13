@@ -1,6 +1,15 @@
 <?php
+include_once 'config/Database.php';
+include_once '../models/Dress.php';
 
-function viewDresses($result){
+
+$database= new Database();
+$db = $database->connect();
+
+$dress=new Dress($db);
+
+$result = $dress->getDresses();
+
     $num= $result->rowCount();
 
     if($num>0){
@@ -15,7 +24,9 @@ function viewDresses($result){
             );
             array_push($dress_arr['data'],$dress_item);
         }
-        json_encode($dress_arr);
+       echo json_encode(array(
+           "Dresses_Info" => $dress_arr
+       ));
     }
     else{
         http_response_code(404);
@@ -23,4 +34,4 @@ function viewDresses($result){
         // tell the user login failed
         echo json_encode(array("message" => "No data found."));
     }
-}
+

@@ -30,9 +30,7 @@ if(!empty($user->f_name) &&
     !empty($user->l_name) &&
     !empty($user->email) &&
     !empty($user->pass) &&
-    !empty($user->isAdm) &&
-    $user->create() ){
-
+    $user->create()){
     // set response code
     http_response_code(200);
 

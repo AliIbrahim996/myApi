@@ -17,7 +17,7 @@ class Dress
     }
     function setDressInfo($d_id){
         $query = "Select * from " . $this->table.
-            "where d_id = ?";
+            " where d_id = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $d_id);
         $stmt->execute();
@@ -39,7 +39,7 @@ class Dress
     }
     function deleteDress()
     {
-        $query = "delete from " . $this->table ."where d_id = ".$this->d_id;
+        $query = "delete from " . $this->table ." where d_id = ".$this->d_id;
         $stmt = $this->conn->prepare($query);
         if ($stmt->execute()) {
             return true;

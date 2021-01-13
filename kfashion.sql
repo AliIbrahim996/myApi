@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 12, 2021 at 08:10 PM
+-- Generation Time: Jan 13, 2021 at 04:28 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -43,12 +43,20 @@ CREATE TABLE `cart` (
 CREATE TABLE `customer` (
   `ID` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `customer_name` int(11) NOT NULL,
+  `customer_name` varchar(11) NOT NULL,
   `phoneNumber` varchar(60) NOT NULL,
   `Location` varchar(60) NOT NULL,
   `hasPaymentMethod` date NOT NULL,
   `card_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`ID`, `user_id`, `customer_name`, `phoneNumber`, `Location`, `hasPaymentMethod`, `card_id`) VALUES
+(3, 8, 'Ahamd', '12345678', 'Lattakia', '0000-00-00', 1235),
+(5, 9, 'Ahamd', '12345678', 'Tartous', '0000-00-00', 1236);
 
 -- --------------------------------------------------------
 
@@ -62,6 +70,14 @@ CREATE TABLE `dress` (
   `d_color` varchar(50) NOT NULL,
   `d_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `dress`
+--
+
+INSERT INTO `dress` (`d_id`, `d_type`, `d_color`, `d_price`) VALUES
+(1, 'old_fashion', 'red', 300),
+(2, 'new', 'green', 400);
 
 -- --------------------------------------------------------
 
@@ -347,11 +363,20 @@ CREATE TABLE `purchases` (
 CREATE TABLE `users` (
   `userId` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
-  `last_name` int(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
   `user_email` varchar(50) NOT NULL,
   `password` varchar(150) NOT NULL,
   `user_role` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`userId`, `first_name`, `last_name`, `user_email`, `password`, `user_role`) VALUES
+(7, 'ali', 'ibrahim', 'aaaa@gmail.com', '$2y$10$jBaXDmFOsSQy4EMqJiTR0OUE4LHxazOcfpDsLLJCC6MBWhG9O7HAu', 1),
+(8, 'Ahmad', 'Ahmad', 'ahmad@test.com', '$2y$10$fJKjxfAVV2bVYjxbPfAIfuOcIYLik4yPaTE0Wu7NjSEy2WzJeJQni', 0),
+(9, 'Ahmad', 'Ali', 'ahAli@test.com', '$2y$10$c4tqfvY6ZvKJ3wIXvetau./GgJKK5WBqrYxvKDNqGvy2kFv02r0vy', 0);
 
 --
 -- Indexes for dumped tables
@@ -362,8 +387,8 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`c_id`),
-  ADD KEY `dress_id` (`dress_id`),
-  ADD KEY `user_id_cnst` (`user_id`);
+  ADD KEY `user_id_cnst` (`user_id`),
+  ADD KEY `dress_id_cons` (`dress_id`);
 
 --
 -- Indexes for table `customer`
@@ -504,8 +529,8 @@ ALTER TABLE `pma__users`
 --
 ALTER TABLE `purchases`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `dress_id` (`dress_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `dress_id_Con` (`dress_id`);
 
 --
 -- Indexes for table `users`
@@ -522,7 +547,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `dress`
+--
+ALTER TABLE `dress`
+  MODIFY `d_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pma__bookmark`
@@ -564,7 +595,7 @@ ALTER TABLE `pma__savedsearches`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `userId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
@@ -574,7 +605,7 @@ ALTER TABLE `users`
 -- Constraints for table `cart`
 --
 ALTER TABLE `cart`
-  ADD CONSTRAINT `dress_id` FOREIGN KEY (`dress_id`) REFERENCES `dress` (`d_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `dress_id_cons` FOREIGN KEY (`dress_id`) REFERENCES `dress` (`d_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_id_cnst` FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`);
 
 --
@@ -587,6 +618,7 @@ ALTER TABLE `customer`
 -- Constraints for table `purchases`
 --
 ALTER TABLE `purchases`
+  ADD CONSTRAINT `dress_id_Con` FOREIGN KEY (`dress_id`) REFERENCES `dress` (`d_id`),
   ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
