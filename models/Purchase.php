@@ -22,7 +22,7 @@ class Purchase
     public function setPurchaseData($data){
 
         $this->d_id=$data->dress_id;
-        $this->user_id=$data->user_id;
+        $this->user_id=$data->u_id;
         $this->d_price=$data->price;
         $this->created_at=$data->created_at;
 

@@ -94,7 +94,7 @@ class Customer
     public function setCutomerInfo($c_id){
         $this->setUId($c_id);
         $query="select * from ".$this->table.
-            "where user_id = ?";
+            " where user_id = ?";
         $stmt=$this->conn->prepare($query);
         $stmt->bindParam(1, $this->u_id);
         $stmt->execute();
@@ -105,7 +105,7 @@ class Customer
             $this->hasPaymentMethod=$row['hasPaymentMethod'];
             $this->c_name=$row['customer_name'];
             $this->phoneNum=$row['phoneNumber'];
-            $this->location=$row['location'];
+            $this->location=$row['Location'];
         }
     }
     public function hasPaymentMethod()

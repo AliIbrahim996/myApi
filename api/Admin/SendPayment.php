@@ -1,11 +1,10 @@
 <?php
 include "../headers.php";
-require '../userAuth/isAdmin.php';
+
 include "../sendPayment.php";
-include "../PaymentData.php";
 include "../../models/Purchase.php";
 class SendPayment implements sendPay {
-    private $data;
+    public $data;
     private $purchase;
     public function __construct()
     {
@@ -17,10 +16,11 @@ class SendPayment implements sendPay {
 
     public function sendPay()
     {
+
         $this->purchase->setPurchaseData($this->data);
-        $this->purchase->insertData();
-        // TODO: Implement sendPay() method.
-        http_response_code(200);
-        json_encode(array("message" => "purchase done."));
+       if($this->purchase->insertData())
+        return true;
+       else
+           return false;
     }
 }

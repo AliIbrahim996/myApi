@@ -39,14 +39,21 @@ if(isAdmin()){
     $num= $result->rowCount();
     $customers_arr= array();
     $customers_arr['data']=array();
+    $flag="";
     if($num>0){
         while ($row = $result->fetch(PDO::FETCH_ASSOC)){
+            if($row['hasPaymentMethod']){
+                $flag="yes";
+            }
+            else{
+                $flag="No";
+            }
             $customer_item=array(
                 'id' => $row['user_id'],
                 'name' => $row['customer_name'] ,
                 'PhoneNum' =>$row['phoneNumber'] ,
                 'Location' => $row['Location'] ,
-                'hasPaymentMethod' =>$row['hasPaymentMethod'] ,
+                'hasPaymentMethod' =>$flag ,
                 'card_id' =>$row['card_id'] ,
             );
             array_push($customers_arr['data'],$customer_item);
