@@ -5,7 +5,7 @@ class Customer
 {
     private  $conn;
     private $table='customer';
-    //User Prop
+    //Customer Prop
     public $id;
     public $c_name;
     public $u_id;
@@ -72,18 +72,54 @@ class Customer
         return $stmt;
     }
 
-    function delete($u_id){
+
+    public function setUId($u_email)
+    {
+        $query= "select userID from users where user_email = ?";
+        $stmt = $this->conn->prepare( $query );
+
+        // bind value
+        $stmt->bindParam(1, $u_email);
+        $stmt->execute();
+        $num=$stmt->rowCount();
+        if($num>0){
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->u_id = $row['userID'];
+        }
+    }
+    function delete($u_email){
+        $this->setUId($u_email);
         $query= "Delete from ".$this->table
             ."where user_Id = ?";
         $stmt = $this->conn->prepare( $query );
 
         // bind value
-        $stmt->bindParam(1, $u_id);
-
+        $stmt->bindParam(1, $this->u_id);
         // execute the query
         if($stmt->execute()){
             return true;
         }
         return false;
+    }
+    public function setCutomerInfo($email){
+        $this->setUId($email);
+        $query="select * from ".$this->table.
+            "where user_id = ?";
+        $stmt=$this->conn->prepare($query);
+        $stmt->bindParam(1, $this->u_id);
+        $stmt->execute();
+        $num=$stmt->rowCount();
+        if($num>0){
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->cardId=$row['card_id'];
+            $this->hasPaymentMethod=$row['hasPaymentMethod'];
+            $this->c_name=$row['customer_name'];
+            $this->phoneNum=$row['phoneNumber'];
+            $this->location=$row['location'];
+        }
+    }
+    public function hasPaymentMethod()
+    {
+        return $this->hasPaymentMethod;
     }
 }

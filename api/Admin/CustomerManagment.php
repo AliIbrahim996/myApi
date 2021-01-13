@@ -1,22 +1,18 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost/SCIT/test");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
-
+include "../headers.php";
 include_once '../config/Database.php';
 include_once '../../models/Customer.php';
 require '../userAuth/isAdmin.php';
  class CustomerManagment{
 
      private $customer;
+     private $data;
      public function __construct()
      {
          $database= new Database();
          $db = $database->connect();
-         $customer =new Customer($db);
+         $this->customer =new Customer($db);
+         $this->data = json_decode(file_get_contents("php://input"));
      }
 
      public function getCustomerInfo(){
@@ -24,53 +20,54 @@ require '../userAuth/isAdmin.php';
      }
 
      public function deleteCustomer(){
-         if(isset($_SESSION['userId'])) {
-            $flag= $this->customer->delete($_SESSION['userId']);
+
+         if(!empty($this->data->email)) {
+            $flag= $this->customer->delete($this->data->email);
             if($flag) {
                 // set response code
                 http_response_code(200);
 
-                // display message: user was created
+                // display message: Customer deleted Successful
                 echo json_encode(array("message" => "Customer deleted Successful."));
             }
                 else{
                     // set response code
                     http_response_code(400);
 
-                    // display message: unable to create user
+                    // display message: Unable to delete Customer
                     echo json_encode(array("message" => "Unable to delete Customer."));
                 }
             }
          else{
              http_response_code(400);
 
-             // display message: unable to create user
+             // display message: Unable to delete Customer! userId is empty! login first!
              echo json_encode(array("message" => "Unable to delete Customer! userId is empty! login first!."));
          }
      }
 
      public function addCustomer(){
-         $data = json_decode(file_get_contents("php://input"));
-         if(!!empty($data->c_name) &&
-             !empty($data->c_location) &&
-             !empty($data->c_phoneNum) &&
-             !empty($data->hasPayMethod) &&
-             !empty($data->cardId)&&
-         isset($_SESSION ['userId'])){
-             $u_id=$_SESSION ['userId'];
-             $flag=$this->customer->create($u_id,$data);
+
+         if(!empty($this->data->c_name) &&
+             !empty($this->data->c_location) &&
+             !empty($this->data->c_phoneNum) &&
+             !empty($this->data->hasPayMethod) &&
+             !empty($this->data->cardId)&&
+             empty($this->data->userId)){
+             $u_id=$this->data->userId;
+             $flag=$this->customer->create($u_id,$this->data);
              if($flag){
                  // set response code
                  http_response_code(200);
 
-                 // display message: user was created
+                 // display message: Customer creted Successful
                  echo json_encode(array("message" => "Customer creted Successful."));
              }
              else{
                  // set response code
                  http_response_code(400);
 
-                 // display message: unable to create user
+                 // display message: Unable to create Customer
                  echo json_encode(array("message" => "Unable to create Customer."));
              }
          }
@@ -78,7 +75,7 @@ require '../userAuth/isAdmin.php';
              // set response code
              http_response_code(400);
 
-             // display message: unable to create user
+             // display message: Unable to create Customer! check your data!
              echo json_encode(array("message" => "Unable to create Customer! check your data!."));
          }
 

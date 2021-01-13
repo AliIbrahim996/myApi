@@ -13,19 +13,21 @@ class DressesManagment
 {
 
     private $dress;
+    private  $data;
     public function __construct()
     {
         $database= new Database();
         $db = $database->connect();
-        $dress=new Dress($db);
+        $this->dress=new Dress($db);
+        $this->data = json_decode(file_get_contents("php://input"));
     }
     function viewDresses(){
        return $this->dress->getDresses();
     }
     function deleteDress(){
         // get posted data
-        $data = json_decode(file_get_contents("php://input"));
-        $this->dress->d_id=$data->d_id;
+
+        $this->dress->d_id=$this->data->d_id;
         if(
             !empty($this->dress->d_id)
             && $this->dress->delete()
@@ -34,7 +36,7 @@ class DressesManagment
             // set response code
             http_response_code(200);
 
-            // display message: user was created
+            // display message: Dress deleted Successful
             echo json_encode(array("message" => "Dress deleted Successful."));
         }
     // message if unable to create
@@ -43,24 +45,23 @@ class DressesManagment
             // set response code
             http_response_code(400);
 
-            // display message: unable to create user
+            // display message: Unable to delete dress
             echo json_encode(array("message" => "Unable to delete dress."));
         }
     }
     function addDress(){
-         $data=json_decode(file_get_contents("php://input"));
-         $flag=$this->dress->addDress($data);
+         $flag=$this->dress->addDress($this->data);
         if($flag){
             http_response_code(200);
 
-            // display message: user was created
+            // display message: Dress added Successful
             echo json_encode(array("message" => "Dress added Successful."));
         }
         else{
             // set response code
             http_response_code(400);
 
-            // display message: unable to create user
+            // display message: Unable to add dress
             echo json_encode(array("message" => "Unable to add dress."));
         }
     }

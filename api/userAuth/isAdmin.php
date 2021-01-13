@@ -1,12 +1,6 @@
 <?php
 // required headers
-header("Access-Control-Allow-Origin: http://localhost/SCIT/test");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, 
-Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
+include "../headers.php";
 require 'login.php';
 
 //init DB & Connect
@@ -20,10 +14,10 @@ $db = $database->connect();
 
 // instantiate user object
 $user = new User($db);
-
-if (isset($_POST['email']) and isset($_POST['password']))
+$data = json_decode(file_get_contents("php://input"));
+if (!empty($data->email) && !empty($data->password))
 {
-    $user->email=$_POST['email'];
+    $user->email=$data->email;
    if($user->isAdmin()){
        // set response code
        http_response_code(200);

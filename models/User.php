@@ -69,10 +69,7 @@ class User{
     /**
      * @param mixed $id
      */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
+
     function getUserId(){
         // query to check if email exists
         $query = "SELECT userId
@@ -102,12 +99,12 @@ class User{
             $this->id = $row['userId'];
         }
     }
-    function delete(){
+    function delete($email){
         $query= "Delete from ".$this->table
-            ."where userId = ?";
+            ."where user_email = ?";
         $stmt = $this->conn->prepare( $query );
-
-        $this->email=htmlspecialchars(strip_tags($this->id));
+        $this->email=$email;
+        $this->email=htmlspecialchars(strip_tags($this->email));
 
         // bind value
         $stmt->bindParam(1, $this->email);
@@ -118,17 +115,17 @@ class User{
         }
         return false;
     }
-    function emailExists(){
+    function emailExists($email){
 
         // query to check if email exists
-        $query = "SELECT userId, first_name, last_name, password
+        $query = "SELECT userId, first_name, last_name, password,user_role
             FROM " . $this->table . "
             WHERE user_email = ?
             LIMIT 0,1";
 
         // prepare the query
         $stmt = $this->conn->prepare( $query );
-
+        $this->email = $email;
         $this->email=htmlspecialchars(strip_tags($this->email));
 
         // bind value
@@ -172,7 +169,7 @@ class User{
 
             // get record values
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            echo "isAdmin ".$row['user_role'];
+            //echo "isAdmin ".$row['user_role'];
             if($row['user_role']){
                 return true;
             }

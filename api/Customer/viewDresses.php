@@ -6,7 +6,7 @@ class viewDresses{
     {
         $database= new Database();
         $db = $database->connect();
-        $dress=new Dress($db);
+        $this->dress=new Dress($db);
     }
     function viewDresses()
     {

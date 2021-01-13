@@ -5,7 +5,7 @@ class Dress
 {
     private $conn;
     private $table = 'dress';
-    //User Prop
+    //Dress Prop
     public $d_id;
     public $d_type;
     public $d_color;
@@ -15,7 +15,21 @@ class Dress
     {
         $this->conn = $db;
     }
-
+    function setDressInfo($d_id){
+        $query = "Select * from " . $this->table.
+            "where d_id = ?";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $d_id);
+        $stmt->execute();
+        $num=$stmt->rowCount();
+        if($num>0){
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $this->d_price=$row['d_price'];
+            $this->d_id=$row['d_id'];
+            $this->d_color=$row['d_color'];
+            $this->d_type=$row['d_type'];
+        }
+    }
     function getDresses()
     {
         $query = "Select * from " . $this->table;

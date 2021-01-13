@@ -1,11 +1,6 @@
 <?php
-header("Access-Control-Allow-Origin: http://localhost/SCIT/test");
-header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-
+include "../headers.php";
 include_once '../config/Database.php';
 include_once '../../models/User.php';
 require '../userAuth/isAdmin.php';
@@ -13,12 +8,14 @@ require '../userAuth/isAdmin.php';
 class UsersManagment
 {
     private $users;
+    private $data;
 
     public function __construct()
     {
         $database= new Database();
         $db = $database->connect();
-        $users=new User($db);
+        $this->users=new User($db);
+        $this->data = json_decode(file_get_contents("php://input"));
     }
 
     public function getUsersInfo(){
@@ -26,9 +23,8 @@ class UsersManagment
     }
 
     public function deleteUser(){
-        if(isset($_SESSION['userId'])) {
-            $this->users->setId($_SESSION['userId']);
-            $this->users->delete();
+        if(!empty($this->data->email)) {
+            $this->users->delete($this->data->email);
         }
     }
 }
