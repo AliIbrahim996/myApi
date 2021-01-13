@@ -43,22 +43,28 @@ public function __construct()
     }
 
     function addToCart(){
-        if(!empty($this->data->email)&& !empty($this->data->d_id)) {
-            $this->customer->setCutomerInfo($this->data->email);
-            $this->dress->setDressInfo($this->data->d_id);
-            $cart_data=array(
-                "user_id" =>$this->customer->u_id,
-                "dress_id" =>$this->dress->d_id,
-                "created_at" =>date("Y/m/d")
-            );
-            $this->cart->setCartData($cart_data);
-            $this->cart->insertData();
-            http_response_code(200);
-            return json_encode(array(
-                "cart_data" => $cart_data,
-                "flag" => 1,
-                "message" => "added to cart"
-            ));
+        if(!empty($this->data->email) && !empty($this->data->dress_id)) {
+            $this->customer->setCutomerInfo($this->data->u_id);
+            $this->dress->setDressInfo($this->data->dress_id);
+            $this->cart->setCartData($this->data);
+            if ($this->cart->insertData()) {
+                $c_data = array(
+                    "user_id" => $this->data->u_id,
+                    "dress_id" => $this->dress->d_id,
+                    "created_at" => date("Y/m/d")
+                );
+                return json_encode(array(
+                    "cart_data" => $c_data,
+                    "flag" => 1,
+                    "message" => "added to cart Done"
+                ));
+            }
+            else{
+                return json_encode(array(
+                    "flag" => 0 ,
+                    "message" => "faild to adde to cart !"
+                ));
+            }
         }
     }
 
